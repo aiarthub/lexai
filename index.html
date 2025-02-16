@@ -7,22 +7,43 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <script defer src="script.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+    </style>
 </head>
 <body>
 
     <iframe id="lexicaFrame" src="https://lexica.art" allowfullscreen></iframe>
 
     <script>
-        // Check if Lexica blocks the iframe
-        document.getElementById("lexicaFrame").onload = function() {
-            let frame = document.getElementById("lexicaFrame").contentWindow;
-            
-            try {
-                frame.document.body.style.background = "black"; // Test if we can access it
-            } catch (e) {
-                alert("Lexica blocked the iframe! We will use an alternative method.");
-                window.location.href = "https://lexica.art"; // Fallback to opening in full page
-            }
+        let iframe = document.getElementById("lexicaFrame");
+
+        iframe.onload = function() {
+            setTimeout(() => {
+                try {
+                    let testAccess = iframe.contentWindow.document.body;
+                    console.log("Iframe loaded successfully");
+                } catch (e) {
+                    console.log("Lexica blocked the iframe. Attempting workaround...");
+                    iframe.src = "https://lexica.art?nocache=" + new Date().getTime();
+                }
+            }, 500);
         };
     </script>
 
