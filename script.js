@@ -1,20 +1,16 @@
-document.getElementById("lexicaFrame").onload = function() {
-    let frame = document.getElementById("lexicaFrame").contentWindow;
-    
-    try {
-        let script = frame.document.createElement("script");
-        script.innerHTML = `
-            setTimeout(() => {
-                document.querySelector('header')?.remove();
-                document.querySelector('footer')?.remove();
-                document.querySelector('[class*="top"]')?.remove();
-                document.querySelector('[class*="bottom"]')?.remove();
-                document.querySelector('button:has-text("Copy URL")')?.remove();
-                document.querySelector('button:has-text("Open in editor")')?.remove();
-            }, 3000);
-        `;
-        frame.document.body.appendChild(script);
-    } catch (e) {
-        console.log("Failed to inject script");
-    }
-};
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+iframe {
+    width: 100vw;
+    height: 100vh;
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
