@@ -6,27 +6,28 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 let frameDoc = iframe.contentWindow.document;
 
-                // Create a CSS style block for element hiding
-                let css = `
-                    header, footer, [class*="top"],
-                    h1, button:has-text("Generate"),
-                    [href="/aperture"], a[href="/"],
-                    .absolute.right-2.bottom-2 > button,
-                    .flex.space-x-2.px-2 > button,
-                    div:has(button:has-text("Copy URL")),
-                    div:has(button:has-text("Copy prompt")) {
-                        display: none !important;
-                    }
-                `;
+                // Remove elements using JavaScript
+                [
+                    "header",
+                    "footer",
+                    "[class*=top]",
+                    "h1",
+                    'button:has-text("Generate")',
+                    '[href="/aperture"]',
+                    'a[href="/"]',
+                    ".absolute.right-2.bottom-2 > button",
+                    ".flex.space-x-2.px-2 > button",
+                    'div:has(button:has-text("Copy URL"))',
+                    'div:has(button:has-text("Copy prompt"))'
+                ].forEach(selector => {
+                    let elements = frameDoc.querySelectorAll(selector);
+                    elements.forEach(el => el.remove());
+                });
 
-                let style = frameDoc.createElement("style");
-                style.innerHTML = css;
-                frameDoc.head.appendChild(style);
-
-                console.log("Branding & unwanted elements hidden successfully.");
+                console.log("Elements removed successfully!");
             } catch (e) {
-                console.log("Could not modify iframe content. Lexica might have security restrictions.");
+                console.log("Failed to remove elements. Lexica might be blocking access.");
             }
-        }, 3000); // Ensures page fully loads before hiding elements
+        }, 3000); // Give time for page to fully load
     };
 });
