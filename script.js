@@ -2,26 +2,26 @@ document.addEventListener("DOMContentLoaded", function () {
     let iframe = document.getElementById("lexicaFrame");
 
     iframe.onload = function () {
-        try {
-            let frameDoc = iframe.contentWindow.document;
+        setTimeout(() => {
+            try {
+                let frameDoc = iframe.contentWindow.document;
 
-            let hideElements = () => {
-                let elementsToHide = [
-                    "header", "footer",
-                    '[class*="top"]', '[class*="bottom"]',
-                    'button:has-text("Copy URL")',
-                    'button:has-text("Open in editor")'
-                ];
-                
-                elementsToHide.forEach(selector => {
-                    let elements = frameDoc.querySelectorAll(selector);
-                    elements.forEach(el => el.remove());
-                });
-            };
+                // Remove unwanted elements
+                let css = `
+                    header, footer, [class*="top"], [class*="bottom"], 
+                    button:has-text("Copy URL"), button:has-text("Open in editor") {
+                        display: none !important;
+                    }
+                `;
 
-            setTimeout(hideElements, 3000);
-        } catch (e) {
-            console.log("Failed to access iframe content. Trying alternative methods...");
-        }
+                let style = frameDoc.createElement("style");
+                style.innerHTML = css;
+                frameDoc.head.appendChild(style);
+
+                console.log("Elements hidden successfully.");
+            } catch (e) {
+                console.log("Could not access iframe content. Lexica may have restrictions.");
+            }
+        }, 3000); // Wait 3 seconds to ensure everything loads first
     };
 });
