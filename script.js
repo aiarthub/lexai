@@ -1,16 +1,27 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
+document.addEventListener("DOMContentLoaded", function () {
+    let iframe = document.getElementById("lexicaFrame");
 
-iframe {
-    width: 100vw;
-    height: 100vh;
-    border: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+    iframe.onload = function () {
+        try {
+            let frameDoc = iframe.contentWindow.document;
+
+            let hideElements = () => {
+                let elementsToHide = [
+                    "header", "footer",
+                    '[class*="top"]', '[class*="bottom"]',
+                    'button:has-text("Copy URL")',
+                    'button:has-text("Open in editor")'
+                ];
+                
+                elementsToHide.forEach(selector => {
+                    let elements = frameDoc.querySelectorAll(selector);
+                    elements.forEach(el => el.remove());
+                });
+            };
+
+            setTimeout(hideElements, 3000);
+        } catch (e) {
+            console.log("Failed to access iframe content. Trying alternative methods...");
+        }
+    };
+});
