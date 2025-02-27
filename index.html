@@ -24,6 +24,9 @@
             width: 100vw;
             height: 100vh;
             border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
@@ -37,10 +40,25 @@
         iframe.onload = function() {
             setTimeout(() => {
                 try {
-                    let testAccess = iframe.contentWindow.document.body;
+                    let frame = iframe.contentWindow.document;
                     console.log("Iframe loaded successfully");
+
+                    // Inject script to remove unwanted elements
+                    let script = frame.createElement("script");
+                    script.innerHTML = `
+                        setTimeout(() => {
+                            document.querySelector('header')?.remove();
+                            document.querySelector('footer')?.remove();
+                            document.querySelector('[class*="top"]')?.remove();
+                            document.querySelector('[class*="bottom"]')?.remove();
+                            document.querySelector('button:has-text("Copy URL")')?.remove();
+                            document.querySelector('button:has-text("Open in editor")')?.remove();
+                        }, 3000);
+                    `;
+                    frame.body.appendChild(script);
+
                 } catch (e) {
-                    console.log("Lexica blocked the iframe. Attempting workaround...");
+                    console.log("Lexica blocked iframe. Attempting workaround...");
                     iframe.src = "https://lexica.art?nocache=" + new Date().getTime();
                 }
             }, 500);
