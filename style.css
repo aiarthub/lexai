@@ -1,42 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-}
-
 iframe {
     width: 100vw;
     height: 100vh;
     border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexica PWA</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <script defer src="script.js"></script>
-</head>
-<body>
 
-    <iframe id="lexicaFrame" src="https://lexica.art" allowfullscreen></iframe>
+/* Hide unwanted elements inside the iframe */
+iframe::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    pointer-events: none;
+}
 
-    <script>
-        // Check if Lexica blocks the iframe
-        document.getElementById("lexicaFrame").onload = function() {
-            let frame = document.getElementById("lexicaFrame").contentWindow;
-            
-            try {
-                frame.document.body.style.background = "black"; // Test if we can access it
-            } catch (e) {
-                alert("Lexica blocked the iframe! We will use an alternative method.");
-                window.location.href = "https://lexica.art"; // Fallback to opening in full page
-            }
-        };
-    </script>
-
-</body>
-</html>
+header, footer, [class*="top"], h1,
+button:has-text("Generate"),
+[href="/aperture"], a[href="/"],
+.absolute.right-2.bottom-2 > button,
+.flex.space-x-2.px-2 > button,
+div:has(button:has-text("Copy URL")),
+div:has(button:has-text("Copy prompt")) {
+    display: none !important;
+}
